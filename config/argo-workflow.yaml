@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: "v2.4.9"
+    targetRevision: "0.33.1"
     chart: argo/argo-workflows
     helm:
       values: |
