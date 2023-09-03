@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: "3.3.9"
+    chart: argo/argo-workflows
+    helm:
+      values: |
+        server:
+          global:
+            scrape_interval: 10s
+          ingress:
+            enabled: true
+            ingressClassName: kong
+            hosts:
+            - argo-workflows.local
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: workflow
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
