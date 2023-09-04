@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-workflows
+  name: argo-rollouts
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://argoproj.github.io/argo-helm
     targetRevision: "0.33.1"
-    chart: argo-workflows
+    chart: argo-rollouts
     helm:
       values: |
         server:
@@ -19,10 +19,12 @@ spec:
             ingressClassName: kong
             hosts:
             - argo-workflows.local
-    path: argo-workflows/overlays/production            
+            dashboard:
+              enabled: true
+    #path: argo-workflows/overlays/production            
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo
+    namespace: argo-rollouts
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
