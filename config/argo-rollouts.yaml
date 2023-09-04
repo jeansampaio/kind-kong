@@ -18,7 +18,8 @@ spec:
             enabled: true
             ingressClassName: kong
             hosts:
-            - argo-rollouts.local:3100
+            #- argo-rollouts.local:31000
+            - argo-rollouts.local
         dashboard:
           enabled: true
     #path: argo-workflows/overlays/production            
