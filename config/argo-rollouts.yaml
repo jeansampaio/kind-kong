@@ -10,6 +10,9 @@ spec:
     targetRevision: "2.31.5"
     chart: argo-rollouts
     helm:
+      parameters:
+        - name: dashboard.enabled
+          value: 'true'      
       values: |
         server:
           global:
@@ -22,7 +25,7 @@ spec:
             - argo-rollouts.local
         dashboard:
           enabled: true
-    #path: argo-workflows/overlays/production            
+    path: argo-rollouts/base            
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-rollouts
