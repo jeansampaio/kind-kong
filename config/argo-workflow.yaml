@@ -19,7 +19,7 @@ spec:
             ingressClassName: kong
             hosts:
             - argo-workflows.local
-    #path: argo-workflows/overlays/production            
+    path: argo-workflows/overlays/production            
   destination:
     server: https://kubernetes.default.svc
     namespace: argo
