@@ -18,9 +18,9 @@ spec:
             enabled: true
             ingressClassName: kong
             hosts:
-            - argo-rollouts.local
-            dashboard:
-              enabled: true
+            - argo-rollouts.local:3100
+        dashboard:
+          enabled: true
     #path: argo-workflows/overlays/production            
   destination:
     server: https://kubernetes.default.svc
