@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.konghq.com
     targetRevision: "2.8.0"
-    chart: kong
+    chart: kong-istio
     helm:
       parameters:
       - name: "ingressController.installCRDs"
