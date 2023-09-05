@@ -2,14 +2,14 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   # app name
-  name: mongodb
+  name: mysql
   # deployed yaml
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/jeansampaio/kind-kong.git
-    path: repository/helm-charts/mongodb
+    path: repository/helm-charts/mysql
     targetRevision: HEAD
     helm:
       valueFiles:
