@@ -39,7 +39,7 @@ git push origin main
 ## Create Kind cluster
 
 ```bash
-kind create cluster --name kong --config=resources/kind.yaml
+kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.23.5
 kind get kubeconfig --name kong > ~/.kube/kind-kong-config
 ```
 
@@ -83,6 +83,8 @@ helm repo update
 
 helm install argo-cd argo/argo-cd --create-namespace --namespace argocd --version 4.5.7 --values resources/argocd-values.yaml
 
+helm upgrade --install argo-cd argo/argo-cd --create-namespace  --namespace argocd --values resources/argocd-values.yaml --set controller.args.appResyncPeriod=30 --wait 
+
 # Check pods
 kubectl get pod -n argocd --watch
 ```
@@ -103,6 +105,8 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ```bash
 kubectl port-forward service/argo-cd-argocd-server -n argocd 8080:443
+
+kubectl port-forward service/argocd-server -n argocd 8080:443
 ```
 
 Go to the argocd webpage [https://localhost:8080](https://localhost:8080) and sync the Argo Application `app-of-apps`.
@@ -118,6 +122,11 @@ kubectl -n argocd apply -f resources/argocd-app-of-apps.yaml
 ```bash
 kubectl -n argocd patch deployment argo-cd-argocd-server --type json \
     -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argo-cd-argocd-repo-server:8081","--dex-server","http://argo-cd-argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argo-cd-argocd-redis:6379","--insecure"] }]'
+
+kubectl -n argocd patch deployment argocd-server --type json \
+    -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argocd-repo-server:8081","--dex-server","http://argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argocd-redis:6379","--insecure"] }]'    
+
+kubectl get -n argocd deployment argocd-server -o yaml    
 ```
 
 > This command could take some time to reload the Pod.

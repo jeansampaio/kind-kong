@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: addons-prometheus-crds
+  namespace: argocd
+spec:
+  generators:
+  - clusters: # Automatically use all clusters defined within Argo CD
+      selector:
+        matchLabels:
+          argocd.argoproj.io/secret-type: cluster
+          addons-prometheus: "true"
+
+  template:
+    metadata:
+      name: '{{name}}-prometheus-crds'
+    spec:
+      project: addons
+      source:
+        repoURL: https://github.com/bitnami/charts.git
+        path: bitnami/kube-prometheus/crds
+        targetRevision: HEAD
+        #targetRevision: 6.8.5
+
+        directory:
+          recurse: true
+
+      destination:
+        server: '{{server}}'
+        namespace: prometheus
+
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        - Replace=true

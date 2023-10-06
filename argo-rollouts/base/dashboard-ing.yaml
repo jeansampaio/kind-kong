@@ -13,10 +13,41 @@ spec:
   http:
   - route:
     - destination:
-        host: argo-rollouts.local
+        host: argo-rollouts-dashboard
         port:
           number: 3100
     retries:
       perTryTimeout: 500ms
       retryOn: 5xx,gateway-error,connect-failure,refused-stream
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+      backend:
+          service:
+            name: argo-rollouts-dashboard
+            port:
+              number: 80
+T---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-1
+spec:
+  ingressClassName: kong
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /test1
+        backend:
+          serviceName: echo
+          servicePort: 80
