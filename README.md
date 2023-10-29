@@ -39,10 +39,23 @@ git push origin main
 ## Create Kind cluster
 
 ```bash
-kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.23.5
-kind get kubeconfig --name kong > ~/.kube/kind-kong-config
-```
+kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:argo-bigbang
 
+kind get kubeconfig --name kong > ~/.kube/kind-kong-config
+
+kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.23.5
+
+kind get kubeconfig --name kong > ~/.kube/kind-kong-config
+
+kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.23.5
+
+kind get kubeconfig --name kong > ~/.kube/kind-kong-config
+
+kind create cluster --name kong --config=resources/kind.yaml
+
+kind get kubeconfig --name kong > ~/.kube/kind-kong-config
+
+```
 ## Setup kubectl
 
 ```bash
@@ -126,7 +139,7 @@ kubectl -n argocd patch deployment argo-cd-argocd-server --type json \
 kubectl -n argocd patch deployment argocd-server --type json \
     -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argocd-repo-server:8081","--dex-server","http://argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argocd-redis:6379","--insecure"] }]'    
 
-kubectl get -n argocd deployment argocd-server -o yaml    
+kubectl get -n argocd deployment argo-cd-argocd-server -o yaml    
 ```
 
 > This command could take some time to reload the Pod.
