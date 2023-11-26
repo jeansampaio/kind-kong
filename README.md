@@ -43,7 +43,7 @@ kind create cluster --name kong --config=resources/kind.yaml --image kindest/nod
 
 kind get kubeconfig --name kong > ~/.kube/kind-kong-config
 
-kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.23.5
+kind create cluster --name kong --config=resources/kind.yaml --image kindest/node:v1.28.0
 
 kind get kubeconfig --name kong > ~/.kube/kind-kong-config
 
