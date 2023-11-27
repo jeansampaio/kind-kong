@@ -133,11 +133,11 @@ kubectl -n argocd apply -f resources/argocd-app-of-apps.yaml
 ## Expose argocd with kong
 
 ```bash
-kubectl -n argocd patch deployment argo-cd-argocd-server --type json \
-    -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argo-cd-argocd-repo-server:8081","--dex-server","http://argo-cd-argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argo-cd-argocd-redis:6379","--insecure"] }]'
-
 kubectl -n argocd patch deployment argocd-server --type json \
     -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argocd-repo-server:8081","--dex-server","http://argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argocd-redis:6379","--insecure"] }]'    
+
+kubectl -n argocd patch deployment argo-cd-argocd-server --type json \
+    -p='[ { "op": "replace", "path":"/spec/template/spec/containers/0/command","value": ["argocd-server","--staticassets","/shared/app","--repo-server","argo-cd-argocd-repo-server:8081","--dex-server","http://argo-cd-argocd-dex-server:5556","--logformat","text","--loglevel","info","--redis","argo-cd-argocd-redis:6379","--insecure"] }]'
 
 kubectl get -n argocd deployment argo-cd-argocd-server -o yaml    
 ```
